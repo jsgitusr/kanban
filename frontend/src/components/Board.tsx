@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { dummyBoard } from '@/data/dummyBoard';
 import type { KanbanBoard, KanbanCard, ColumnId } from '@/types/kanban';
+import { moveCard } from '@/lib/boardState';
 import { KanbanColumn } from './KanbanColumn';
 import { DndBoardProvider } from './dnd/DndBoardProvider';
 
@@ -19,33 +20,7 @@ export function Board() {
   }
 
   const handleMoveCard = (cardId: string, from: ColumnId, to: ColumnId, index?: number) => {
-    setBoard((current) => {
-      const next: KanbanBoard = {
-        ...current,
-        columns: current.columns.map((col) => ({ ...col, cards: [...col.cards] }))
-      };
-
-      const fromColumn = next.columns.find((c) => c.id === from);
-      const toColumn = next.columns.find((c) => c.id === to);
-      if (!fromColumn || !toColumn) {
-        return current;
-      }
-
-      const fromIndex = fromColumn.cards.findIndex((c) => c.id === cardId);
-      if (fromIndex === -1) {
-        return current;
-      }
-
-      const [card] = fromColumn.cards.splice(fromIndex, 1);
-
-      if (index === undefined || index < 0 || index > toColumn.cards.length) {
-        toColumn.cards.push(card);
-      } else {
-        toColumn.cards.splice(index, 0, card);
-      }
-
-      return next;
-    });
+    setBoard((current) => moveCard(current, cardId, from, to, index));
   };
 
   const handleAddCard = (columnId: ColumnId, title: string, details: string) => {
@@ -157,7 +132,6 @@ export function Board() {
                     <KanbanColumn
                       key={column.id}
                       column={column}
-                      onMoveCard={handleMoveCard}
                       onAddCard={handleAddCard}
                       onDeleteCard={handleDeleteCard}
                       onUpdateCard={handleUpdateCard}

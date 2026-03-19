@@ -6,7 +6,6 @@ interface KanbanCardProps {
   card: KanbanCardType;
   columnId: ColumnId;
   index: number;
-  onMoveCard: (cardId: string, from: ColumnId, to: ColumnId, index?: number) => void;
   onDeleteCard: (columnId: ColumnId, cardId: string) => void;
   onUpdateCard: (columnId: ColumnId, cardId: string, updates: Partial<KanbanCardType>) => void;
 }

@@ -5,7 +5,6 @@ import { DroppableColumn } from './dnd/DroppableColumn';
 
 interface KanbanColumnProps {
   column: KanbanColumnType;
-  onMoveCard: (cardId: string, from: ColumnId, to: ColumnId, index?: number) => void;
   onAddCard: (columnId: ColumnId, title: string, details: string) => void;
   onDeleteCard: (columnId: ColumnId, cardId: string) => void;
   onUpdateCard: (columnId: ColumnId, cardId: string, updates: Partial<KanbanCardType>) => void;
@@ -14,10 +13,9 @@ interface KanbanColumnProps {
 
 export function KanbanColumn({
   column,
-  onMoveCard,
   onAddCard,
   onDeleteCard,
-   onUpdateCard,
+  onUpdateCard,
   onRenameColumn
 }: KanbanColumnProps) {
   const [isEditingName, setIsEditingName] = useState(false);
@@ -94,7 +92,6 @@ export function KanbanColumn({
               card={card}
               columnId={column.id}
               index={index}
-              onMoveCard={onMoveCard}
               onDeleteCard={onDeleteCard}
               onUpdateCard={onUpdateCard}
             />
